@@ -1,0 +1,13 @@
+[project]
+name = "agent"
+version = "0.1.0"
+description = "A customer support voice agent"
+authors = [
+    { name = "Lokeswaran Aruljothy", email = "11lokeswaran@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "livekit-agents[cartesia,deepgram,groq,silero,turn-detector]>=1.4.3",
+    "livekit-plugins-noise-cancellation>=0.2.5",
+    "python-dotenv>=1.2.1",
+]
