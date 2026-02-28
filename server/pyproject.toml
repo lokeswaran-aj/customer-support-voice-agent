@@ -1,0 +1,11 @@
+[project]
+name = "server"
+version = "0.1.0"
+description = "A server for the Customer Support Voice Agent"
+authors = [
+    { name = "Lokeswaran Aruljothy", email = "11lokeswaran@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.134.0",
+]
