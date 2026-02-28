@@ -59,6 +59,7 @@ server = AgentServer()
 
 @server.rtc_session(agent_name="customer-support-assistant")
 async def my_agent(context: agents.JobContext):
+    transcripts = []
     session = AgentSession(
         stt=deepgram.STT(model="nova-3-general"),
         llm=groq.LLM(model="openai/gpt-oss-120b"),
@@ -66,6 +67,18 @@ async def my_agent(context: agents.JobContext):
         vad=silero.VAD.load(),
         turn_detection=EnglishModel(),
     )
+
+    @session.on("conversation_item_added")
+    def on_item_added(event):
+        item = event.item
+        if item.text_content:
+            transcripts.append({"role": item.role, "content": item.text_content})
+
+    @session.on("close")
+    def on_session_close():
+        print("==================================")
+        print(transcripts)
+        print("==================================")
 
     await session.start(
         room=context.room,
