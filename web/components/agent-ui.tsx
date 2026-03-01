@@ -1,43 +1,45 @@
 "use client";
 import {
   useVoiceAssistant,
+  useAgent,
   useSessionContext,
   useSessionMessages,
-  useAgent,
 } from "@livekit/components-react";
 import { AgentControlBar } from "./agents-ui/agent-control-bar";
 import { AgentAudioVisualizerBar } from "./agents-ui/agent-audio-visualizer-bar";
 import { AgentChatTranscript } from "./agents-ui/agent-chat-transcript";
-import { PhoneCallIcon } from "lucide-react";
-import { Button } from "./ui/button";
 
-export const AgentUI = ({
-  isActive,
-  isConnected,
-  onStart,
-}: {
-  isActive: boolean;
-  isConnected: boolean;
-  onStart: () => void;
-}) => {
+export const AgentUI = () => {
   const { audioTrack, state } = useVoiceAssistant();
   const { state: agentState } = useAgent();
   const session = useSessionContext();
   const { messages } = useSessionMessages(session);
 
-  if (!isActive) {
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <Button size="lg" className="rounded-full w-20 h-20" onClick={onStart}>
-          <PhoneCallIcon className="w-8 h-8" />
-        </Button>
-        <p className="text-sm text-muted-foreground">Tap to call support</p>
-      </div>
-    );
-  }
+  const { room } = session;
+  const isConnected = session.isConnected;
+  const info = isConnected
+    ? [
+        { label: "Room Name", value: room.name },
+        {
+          label: "Participant Identity",
+          value: room.localParticipant.identity,
+        },
+        { label: "Participant Name", value: room.localParticipant.name ?? "—" },
+      ]
+    : [];
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-md h-screen py-10">
+    <div className="h-full flex flex-col items-center gap-6 max-w-md mx-auto px-6 py-10">
+      {isConnected && (
+        <div className="w-full rounded-lg border bg-muted/40 px-4 py-3 text-xs text-muted-foreground space-y-1">
+          {info.map(({ label, value }) => (
+            <div key={label} className="flex justify-between gap-4">
+              <span className="font-medium">{label}</span>
+              <span className="font-mono truncate">{value}</span>
+            </div>
+          ))}
+        </div>
+      )}
       <AgentAudioVisualizerBar
         size="xl"
         barCount={5}
@@ -47,7 +49,7 @@ export const AgentUI = ({
       <AgentChatTranscript
         agentState={agentState}
         messages={messages}
-        className="w-full flex-1 overflow-y-auto min-h-0"
+        className="w-full min-h-0"
       />
       <AgentControlBar
         variant="livekit"
