@@ -7,7 +7,11 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "shared",
     "livekit-agents[cartesia,deepgram,groq,silero,turn-detector]>=1.4.3",
     "livekit-plugins-noise-cancellation>=0.2.5",
     "python-dotenv>=1.2.1",
 ]
+
+[tool.uv.sources]
+shared = { workspace = true }

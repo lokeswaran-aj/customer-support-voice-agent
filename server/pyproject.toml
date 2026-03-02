@@ -7,6 +7,10 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "shared",
     "fastapi[standard]>=0.134.0",
     "livekit-api>=1.1.0",
 ]
+
+[tool.uv.sources]
+shared = { workspace = true }

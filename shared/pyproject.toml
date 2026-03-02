@@ -1,0 +1,10 @@
+[project]
+name = "shared"
+version = "0.1.0"
+description = "A shared library for storage configurations"
+requires-python = ">=3.12"
+dependencies = [
+    "asyncpg>=0.31.0",
+    "pydantic-settings>=2.13.1",
+    "sqlalchemy[asyncio]>=2.0.48",
+]
