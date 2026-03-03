@@ -1,3 +1,7 @@
+# Python build artifacts
+*.egg-info/
+build/
+dist/
 .venv
 .env
 .env.*
