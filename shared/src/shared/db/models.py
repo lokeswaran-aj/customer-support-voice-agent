@@ -46,7 +46,7 @@ class Restaurant(Base):
     address: Mapped[str] = mapped_column(String(255), nullable=False)
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     orders: Mapped[list["Order"]] = relationship("Order", back_populates="restaurant")
@@ -69,12 +69,12 @@ class Order(Base):
     )
     total_amount: Mapped[float] = mapped_column(Float(), nullable=False)
     delivery_address: Mapped[str] = mapped_column(String(255), nullable=False)
-    estimated_delivery_at: Mapped[datetime] = mapped_column(DateTime(), nullable=False)
+    estimated_delivery_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime(),
+        DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
@@ -102,7 +102,7 @@ class OrderItem(Base):
     item_quantity: Mapped[int] = mapped_column(Integer(), nullable=False)
     is_missing: Mapped[bool] = mapped_column(Boolean(), default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     order: Mapped["Order"] = relationship("Order", back_populates="items")
@@ -123,7 +123,7 @@ class Refund(Base):
         Enum(RefundStatus), default=RefundStatus.PENDING, nullable=False
     )
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     order: Mapped["Order"] = relationship("Order", back_populates="refunds")
