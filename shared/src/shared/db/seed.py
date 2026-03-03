@@ -36,6 +36,7 @@ async def seed():
         await session.flush()
 
         delayed_order = Order(
+            order_number="QB1001",
             restaurant_id=burger_joint.id,
             scenario=OrderScenario.DELAYED,
             status=OrderStatus.OUT_FOR_DELIVERY,
@@ -45,6 +46,7 @@ async def seed():
         )
 
         missing_items_order = Order(
+            order_number="QB1002",
             restaurant_id=pizza_palace.id,
             scenario=OrderScenario.MISSING_ITEMS,
             status=OrderStatus.DELIVERED,
@@ -54,6 +56,7 @@ async def seed():
         )
 
         wrong_order = Order(
+            order_number="QB1003",
             restaurant_id=sushi_spot.id,
             scenario=OrderScenario.WRONG_ORDER,
             status=OrderStatus.DELIVERED,
@@ -63,6 +66,7 @@ async def seed():
         )
 
         cancelled_order = Order(
+            order_number="QB1004",
             restaurant_id=burger_joint.id,
             scenario=OrderScenario.CANCELLED_BY_RESTAURANT,
             status=OrderStatus.CANCELLED,
@@ -72,6 +76,7 @@ async def seed():
         )
 
         double_charged_order = Order(
+            order_number="QB1005",
             restaurant_id=pizza_palace.id,
             scenario=OrderScenario.DOUBLE_CHARGED,
             status=OrderStatus.DELIVERED,

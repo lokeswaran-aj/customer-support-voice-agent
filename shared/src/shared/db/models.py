@@ -58,18 +58,19 @@ class Order(Base):
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
+    order_number: Mapped[str] = mapped_column(String(10), nullable=False, unique=True)
     restaurant_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("restaurants.id"), nullable=False
     )
-    scenario: Mapped[OrderScenario] = mapped_column(
-        Enum(OrderScenario), nullable=False
-    )
+    scenario: Mapped[OrderScenario] = mapped_column(Enum(OrderScenario), nullable=False)
     status: Mapped[OrderStatus] = mapped_column(
         Enum(OrderStatus), default=OrderStatus.CONFIRMED, nullable=False
     )
     total_amount: Mapped[float] = mapped_column(Float(), nullable=False)
     delivery_address: Mapped[str] = mapped_column(String(255), nullable=False)
-    estimated_delivery_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    estimated_delivery_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
@@ -79,7 +80,9 @@ class Order(Base):
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
-    restaurant: Mapped["Restaurant"] = relationship("Restaurant", back_populates="orders")
+    restaurant: Mapped["Restaurant"] = relationship(
+        "Restaurant", back_populates="orders"
+    )
     items: Mapped[list["OrderItem"]] = relationship(
         "OrderItem", back_populates="order", cascade="all, delete-orphan"
     )
